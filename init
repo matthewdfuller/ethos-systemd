@@ -37,6 +37,20 @@ function leader-setup() {
       sudo ${SCRIPTDIR}/$VERSION/setup/leader/${script}
   done
 
+  for service in $(etcd-get /environment/services)
+  do
+      servicedir=${SCRIPTDIR}/${VERSION}/opt/${service}
+      if [[ ! -d $servicedir ]]; then
+          continue
+      fi
+
+      for script in $(ls $servicedir/leader|grep -e '.sh$')
+      do
+          sudo $servicedir/leader/${script}
+      done
+  done
+  echo "-------Done optional fleet submissions-------"
+
   echo "-------Leader node, writing finished flag to etcd-------"
 
   etcd-set /bootstrap.service/leader-status finished
@@ -59,6 +73,19 @@ function follower-setup() {
   for script in $(ls ${SCRIPTDIR}/$VERSION/setup/common|grep -e '.sh$')
   do
       sudo ${SCRIPTDIR}/$VERSION/setup/common/${script}
+  done
+
+  for service in $(etcd-get /environment/services)
+  do
+      servicedir=${SCRIPTDIR}/${VERSION}/opt/${service}
+      if [[ ! -d $servicedir ]]; then
+          continue
+      fi
+
+      for script in $(ls $servicedir/common|grep -e '.sh$')
+      do
+          sudo $servicedir/common/${script}
+      done
   done
 }
 
