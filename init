@@ -37,21 +37,6 @@ function leader-setup() {
       sudo ${SCRIPTDIR}/$VERSION/setup/leader/${script}
   done
 
-  echo "-------Leader node, beginning optional setup scripts-------"
-  for service in $(etcd-get /environment/services)
-  do
-      servicedir=${SCRIPTDIR}/${VERSION}/opt/${service}/setup/leader
-      if [[ ! -d $servicedir ]]; then
-          continue
-      fi
-
-      for script in $(ls $servicedir|grep -e '.sh$')
-      do
-          sudo $servicedir/${script}
-      done
-  done
-  echo "-------Leader node, done optional setup scripts-------"
-
   echo "-------Leader node, writing finished flag to etcd-------"
 
   etcd-set /bootstrap.service/leader-status finished
@@ -75,21 +60,6 @@ function follower-setup() {
   do
       sudo ${SCRIPTDIR}/$VERSION/setup/common/${script}
   done
-
-  echo "-------Follower node, beginning optional setup scripts-------"
-  for service in $(etcd-get /environment/services)
-  do
-      servicedir=${SCRIPTDIR}/${VERSION}/opt/${service}/setup/common
-      if [[ ! -d $servicedir ]]; then
-          continue
-      fi
-
-      for script in $(ls $servicedir|grep -e '.sh$')
-      do
-          sudo $servicedir/${script}
-      done
-  done
-  echo "-------Follower node, done optional setup scripts-------"
 }
 
 # Check the bootstrap process to see if this node should run the leader scripts
