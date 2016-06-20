@@ -1,5 +1,8 @@
 #!/usr/bin/bash -x
 
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source $DIR/../../lib/helpers.sh
+
 echo "-------Leader node, beginning optional setup scripts-------"
 for service in $(etcd-get /environment/services)
 do
