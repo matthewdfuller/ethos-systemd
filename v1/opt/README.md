@@ -9,8 +9,7 @@ The `/opt` folder is organized by the service name. Within each folder, the foll
 ```
 └── opt
     └── demoservice
-        ├── demoservice-master.service
-        ├── demoservice-slave.service
+        ├── demoservice.service
         ├── leader
         │   └── 001-images.sh
         │   └── 002-script.sh
@@ -25,6 +24,8 @@ Within the `/demoservice` service folder, the following subfolders are defined:
 * `leader`: Scripts that will only be run once, on a single leader node. The best uses for these are to set default image values or perform other `etcd` actions to seed values into the cluster that will later be used by the service.
 * `common`: Scripts that will run on every node, including the leader. The best uses for these are file modifications, folder creation, downloading helper objects, etc.
 * `util`: Scripts that are called by the service as part of `ExecStartPre` or `ExecStart`.
+
+Additionally, the actual service files are provided (one or more).
 
 ## Setting Default Container Image Values
 
