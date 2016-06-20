@@ -61,3 +61,4 @@ If a user launching the stack wants to override this, they would do so in `secre
 * If any script inside of `/opt/demoservice/util` makes AWS API calls, the IAM permissions in the `infrastructure` repository may likely need to be adjusted.
 * If the service does not use a Docker image, the `leader` folder is optional.
 * The `common` and `util` folders within each optional service are optional.
+* IMPORTANT: any scripts in the `/opt` folder, must be executable (`chmod +x`)
