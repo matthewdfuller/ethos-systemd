@@ -7,31 +7,33 @@ The base Ethos clusters launch with the minimum required services (Mesos, Marath
 The `/opt` folder is organized by the service name. Within each folder, the following structure is used:
 
 ```
-└── opt
-    └── demoservice
-        ├── demoservice.service
-        ├── leader
-        │   └── 001-images.sh
-        │   └── 002-script.sh
-        ├── common
-        │   └── 001-script.sh
-        └── util
-            └── helper.sh
+└── demoservice
+    ├── fleet
+    │   └── demoservice.service
+    ├── setup
+    │   ├── common
+    │   │   └── 001-script.sh
+    │   └── leader
+    │       └── 001-images.sh
+    └── util
+        └── helper.sh
 ```
 
 Within the `/demoservice` service folder, the following subfolders are defined:
 
-* `leader`: Scripts that will only be run once, on a single leader node. The best uses for these are to set default image values or perform other `etcd` actions to seed values into the cluster that will later be used by the service.
-* `common`: Scripts that will run on every node, including the leader. The best uses for these are file modifications, folder creation, downloading helper objects, etc.
+* `fleet`: The actual service files
+* `setup`: 
+    * `leader`: Scripts that will only be run once, on a single leader node. The best uses for these are to set default image values or perform other `etcd` actions to seed values into the cluster that will later be used by the service.
+    * `common`: Scripts that will run on every node, including the leader. The best uses for these are file modifications, folder creation, downloading helper objects, etc.
 * `util`: Scripts that are called by the service as part of `ExecStartPre` or `ExecStart`.
 
 Additionally, the actual service files are provided (one or more).
 
 ## Setting Default Container Image Values
 
-All Docker images that are used by the service should be defined in etcd `/images/demoservice`. The cluster works by first running a default script (`001-defaults.sh`) on the leader which sets the default image values for required containers (Mesos, etc.). Then, `003-optional.sh` runs all of the scripts inside of `/opt/demoservice/leader`. These scripts can set the default image values used. Finally, the `004-custom.sh` script is run, which overrides any of these defaults based on the user's `secrets.json` `configs` section.
+All Docker images that are used by the service should be defined in etcd `/images/demoservice`. The cluster works by first running a default script (`001-defaults.sh`) on the leader which sets the default image values for required containers (Mesos, etc.). Then, `003-optional.sh` runs all of the scripts inside of `/opt/demoservice/setup/leader`. These scripts can set the default image values used. Finally, the `004-custom.sh` script is run, which overrides any of these defaults based on the user's `secrets.json` `configs` section.
 
-Your `001-images.sh` file inside of `/opt/demoservice/leader` should look like:
+Your `001-images.sh` file inside of `/opt/demoservice/setup/leader` should look like:
 
 ```
 #!/usr/bin/bash -x

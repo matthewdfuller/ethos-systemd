@@ -1,7 +1,7 @@
 #!/usr/bin/bash -x
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-source $DIR/../../../lib/helpers.sh
+source $DIR/../../../../lib/helpers.sh
 
 etcd-set /images/dd-agent               "index.docker.io/behance/docker-dd-agent:latest"
 etcd-set /images/dd-agent-mesos         "index.docker.io/behance/docker-dd-agent-mesos:latest"

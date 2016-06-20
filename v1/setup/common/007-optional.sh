@@ -6,7 +6,7 @@ source $DIR/../../lib/helpers.sh
 echo "-------Follower node, beginning optional setup scripts-------"
 for service in $(etcd-get /environment/services)
 do
-  servicedir=${SCRIPTDIR}/${VERSION}/opt/${service}/setup/common
+  servicedir=$DIR/../../opt/${service}/setup/common
   if [[ ! -d $servicedir ]]; then
       continue
   fi
