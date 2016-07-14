@@ -5,7 +5,7 @@ Requires=docker.service
 
 [Service]
 User=core
-TimeoutStartSec=0
+TimeoutStartSec=infinity
 EnvironmentFile=/etc/environment
 Environment="IMAGE=etcdctl get /images/scalock-server"
 Environment="SCALOCK_ADMIN_PASSWORD=etcdctl get /aqua/config/password"
