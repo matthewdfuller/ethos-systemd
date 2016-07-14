@@ -1,5 +1,5 @@
 [Unit]
-Description=run aqua gateway @ %i
+Description=run aqua gateway
 After=docker.service bootstrap.service
 Requires=docker.service
 
@@ -23,8 +23,10 @@ ExecStartPre=/usr/bin/systemctl is-active zk-health.service
 ExecStartPre=/usr/bin/sh -c "docker pull $($IMAGE)"
 ExecStartPre=-/usr/bin/docker kill aqua-gateway
 ExecStartPre=-/usr/bin/docker rm aqua-gateway
+ExecStartPre=-/home/core/ethos-systemd/v1/opt/aqua/util/aqua-gateway.sh
 
 ExecStart=/usr/bin/sh -c "sudo docker run -d -p 3622:3622 --name aqua-gateway \
+  --net=host \
   -e SCALOCK_DBUSER=$($DB_USERNAME) \
   -e SCALOCK_DBPASSWORD=$($DB_PASSWORD) \
   -e SCALOCK_DBNAME=$($SCALOCK_DB_NAME) \
@@ -43,4 +45,3 @@ WantedBy=multi-user.target
 [X-Fleet]
 Global=false
 MachineMetadata=role=control
-MachineMetadata=ip=%i
