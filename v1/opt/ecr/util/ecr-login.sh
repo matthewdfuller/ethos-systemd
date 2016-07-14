@@ -16,7 +16,16 @@ function copyAndExit() {
 	exit 0
 }
 
+function waitForIAM() {
+    echo "Waiting for IAM proxy to become live before launching ECR..."
+    while [ "`systemctl is-active iam-proxy.service`" != "active" ]; do sleep 5; done
+}
+
 if [[ -n "$REGISTRY_ACCOUNT" ]]; then
+    if [[ "$NODE_ROLE" = "worker" ]]; then
+        waitForIAM
+    fi
+
     ECR_CFG=$(docker run --label com.swipely.iam-docker.iam-profile="$CONTAINERS_ROLE" --name ecr-login -e "TEMPLATE=templates/dockercfg.tmpl" -e "AWS_REGION=$AWS_REGION" -e "REGISTRIES=$REGISTRY_ACCOUNT" $IMAGE)
 
     if [[ -z $ECR_CFG ]]; then
