@@ -30,11 +30,9 @@ if [[ -n "$REGISTRY_ACCOUNT" ]]; then
             docker rm ecr-login
             ECR_CFG=$(docker run --label com.swipely.iam-docker.iam-profile="$CONTAINERS_ROLE" --name ecr-login -e "TEMPLATE=templates/dockercfg.tmpl" -e "AWS_REGION=$AWS_REGION" -e "REGISTRIES=$REGISTRY_ACCOUNT" $IMAGE)
         done
-
-        docker rm ecr-login
+    else
+        ECR_CFG=$(docker run --label com.swipely.iam-docker.iam-profile="$CONTAINERS_ROLE" --name ecr-login -e "TEMPLATE=templates/dockercfg.tmpl" -e "AWS_REGION=$AWS_REGION" -e "REGISTRIES=$REGISTRY_ACCOUNT" $IMAGE)
     fi
-
-    ECR_CFG=$(docker run --label com.swipely.iam-docker.iam-profile="$CONTAINERS_ROLE" --name ecr-login -e "TEMPLATE=templates/dockercfg.tmpl" -e "AWS_REGION=$AWS_REGION" -e "REGISTRIES=$REGISTRY_ACCOUNT" $IMAGE)
 
     if [[ -z $ECR_CFG ]]; then
     	echo "ECR config could not be obtained"
