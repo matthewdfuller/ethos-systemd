@@ -45,7 +45,7 @@ ExecStart=/usr/bin/sh -c "sudo docker run -d -p 8083:8080 \
    -e BATCH_INSTALL_GATEWAY=$($SCALOCK_GATEWAY_ENDPOINT) \
    -e BATCH_INSTALL_ENFORCE_MODE=y \
    -v /var/run/docker.sock:/var/run/docker.sock \
-   --link aqua-gateway $($IMAGE)"
+   $($IMAGE)"
 
 ExecStop=/usr/bin/docker stop aqua-web
 

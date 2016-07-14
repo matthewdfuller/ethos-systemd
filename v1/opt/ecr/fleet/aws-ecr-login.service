@@ -7,6 +7,8 @@ After=network-online.target
 
 [Service]
 Type=oneshot
+Restart=on-failure
+RestartSec=10
 Environment="IMAGE=etcdctl get /images/ecr-login"
 EnvironmentFile=/etc/environment
 User=core
