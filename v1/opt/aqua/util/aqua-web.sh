@@ -22,7 +22,7 @@ SCALOCK_GATEWAY_ENDPOINT=$(etcdctl get /aqua/config/gateway-host)
 SCALOCK_AUDIT_DB_NAME=$(etcdctl get /aqua/config/db-audit-name)
 SCALOCK_TOKEN=$(etcdctl get /aqua/config/aqua-token)
 
-/usr/bin/sh -c "sudo docker run -d -p 8083:8080 \
+/usr/bin/sh -c "sudo docker run -p 8083:8080 \
    --name aqua-web --user=root \
    -e SCALOCK_DBUSER=$DB_USERNAME  \
    -e SCALOCK_DBPASSWORD=$DB_PASSWORD \
