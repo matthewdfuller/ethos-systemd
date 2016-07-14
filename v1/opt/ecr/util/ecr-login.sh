@@ -16,14 +16,22 @@ function copyAndExit() {
 	exit 0
 }
 
-function waitForIAM() {
-    echo "Waiting for IAM proxy to become live before launching ECR..."
-    while [ "`systemctl is-active iam-proxy.service`" != "active" ]; do sleep 5; done
-}
-
 if [[ -n "$REGISTRY_ACCOUNT" ]]; then
+    docker rm ecr-login
+
+    # Hack workaround - IAM proxy does not become useable on instance until after container is pulled and live (~2 min)
+    # If this tries to run before that the service will fail
     if [[ "$NODE_ROLE" = "worker" ]]; then
-        waitForIAM
+        ECR_CFG=$(docker run --label com.swipely.iam-docker.iam-profile="$CONTAINERS_ROLE" --name ecr-login -e "TEMPLATE=templates/dockercfg.tmpl" -e "AWS_REGION=$AWS_REGION" -e "REGISTRIES=$REGISTRY_ACCOUNT" $IMAGE)
+
+        while [ $? != 0 ]; do
+            echo "Waiting for IAM proxy to become live before launching ECR..."
+            sleep 5;
+            docker rm ecr-login
+            ECR_CFG=$(docker run --label com.swipely.iam-docker.iam-profile="$CONTAINERS_ROLE" --name ecr-login -e "TEMPLATE=templates/dockercfg.tmpl" -e "AWS_REGION=$AWS_REGION" -e "REGISTRIES=$REGISTRY_ACCOUNT" $IMAGE)
+        done
+
+        docker rm ecr-login
     fi
 
     ECR_CFG=$(docker run --label com.swipely.iam-docker.iam-profile="$CONTAINERS_ROLE" --name ecr-login -e "TEMPLATE=templates/dockercfg.tmpl" -e "AWS_REGION=$AWS_REGION" -e "REGISTRIES=$REGISTRY_ACCOUNT" $IMAGE)
