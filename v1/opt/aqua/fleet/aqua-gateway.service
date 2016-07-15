@@ -7,12 +7,12 @@ Requires=docker.service
 User=core
 TimeoutStartSec=10
 EnvironmentFile=/etc/environment
-Environment="IMAGE=etcdctl get /images/scalock-gateway"
-Environment="DB_PASSWORD=etcdctl get /environment/RDSPASSWORD"
-Environment="DB_USERNAME=etcdctl get /flight-director/config/db-username"
-Environment="SCALOCK_DB_NAME=etcdctl get /aqua/config/db-name"
-Environment="SCALOCK_DB_ENDPOINT=etcdctl get /aqua/config/db-path"
-Environment="SCALOCK_AUDIT_DB_NAME=etcdctl get /aqua/config/db-audit-name"
+Environment="IMAGE=etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /images/scalock-gateway"
+Environment="DB_PASSWORD=etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /environment/RDSPASSWORD"
+Environment="DB_USERNAME=etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /flight-director/config/db-username"
+Environment="SCALOCK_DB_NAME=etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /aqua/config/db-name"
+Environment="SCALOCK_DB_ENDPOINT=etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /aqua/config/db-path"
+Environment="SCALOCK_AUDIT_DB_NAME=etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /aqua/config/db-audit-name"
 
 Restart=always
 RestartSec=8

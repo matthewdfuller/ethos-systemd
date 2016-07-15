@@ -4,13 +4,14 @@ Requires=docker.service
 After=docker.service bootstrap.service zk-health.service mesos-master@%i.service
 
 [Service]
+EnvironmentFile=/etc/environment
 Environment=ZOOKEEPER_HOST=localhost:2181
-Environment="IMAGE=etcdctl get /images/marathon"
-Environment="USER=etcdctl get /marathon/config/username"
-Environment="PASSWORD=etcdctl get /marathon/config/password"
-Environment="MESOS_USERNAME=etcdctl get /mesos/config/username"
-Environment="ZK_USERNAME=etcdctl get /zookeeper/config/username"
-Environment="ZK_PASSWORD=etcdctl get /zookeeper/config/password"
+Environment="IMAGE=etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /images/marathon"
+Environment="USER=etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /marathon/config/username"
+Environment="PASSWORD=etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /marathon/config/password"
+Environment="MESOS_USERNAME=etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /mesos/config/username"
+Environment="ZK_USERNAME=etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /zookeeper/config/username"
+Environment="ZK_PASSWORD=etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /zookeeper/config/password"
 
 User=core
 Restart=always

@@ -6,12 +6,13 @@ After=docker.service
 [Service]
 User=core
 Restart=on-failure
-Environment="IMAGE=etcdctl get /images/booster"
+EnvironmentFile=/etc/environment
+Environment="IMAGE=etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /images/booster"
 
 ExecStartPre=/usr/bin/sh -c "/usr/bin/docker pull $($IMAGE)"
 
 # mkdir so `etcdctl ls /booster/nodes` below doesn't fail
-ExecStartPre=-/usr/bin/sh -c "etcdctl mkdir /booster/nodes"
+ExecStartPre=-/usr/bin/sh -c "etcdctl -u $ETCDCTL_WRITE_USER:$ETCDCTL_WRITE_PASSWORD mkdir /booster/nodes"
 
 # Set our internal hostname minus .ec2.internal so
 # ip-123.456.789.123.ec2.internal becomes ip-123.456.789.123 which is what
@@ -20,7 +21,7 @@ ExecStartPre=-/usr/bin/sh -c "etcdctl mkdir /booster/nodes"
 # This is only done for control tier nodes because they're expected to stick
 # around and epmd will create a full mesh without explicity registering worker
 # nodes
-ExecStartPre=/usr/bin/sh -c "etcdctl set /booster/nodes/$(echo %H | cut -d'.' --complement -s -f2-) true"
+ExecStartPre=/usr/bin/sh -c "etcdctl -u $ETCDCTL_WRITE_USER:$ETCDCTL_WRITE_PASSWORD set /booster/nodes/$(echo %H | cut -d'.' --complement -s -f2-) true"
 
 ExecStartPre=-/usr/bin/docker kill booster
 ExecStartPre=-/usr/bin/docker rm booster
@@ -28,8 +29,8 @@ ExecStart=/usr/bin/sh -c "/usr/bin/docker run \
   --name booster \
   --net=host \
   -e BOOSTER_ROLES=control_tier \
-  -e BOOSTER_ENABLED=$(etcdctl get /booster/config/enabled) \
-  -e BOOSTER_NODES=$(etcdctl ls /booster/nodes | cut -d'/' --complement -s -f-3 | tr '\n' ',') \
+  -e BOOSTER_ENABLED=$(etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /booster/config/enabled) \
+  -e BOOSTER_NODES=$(etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD ls /booster/nodes | cut -d'/' --complement -s -f-3 | tr '\n' ',') \
   $($IMAGE)"
 
 ExecStop=-/usr/bin/docker stop booster

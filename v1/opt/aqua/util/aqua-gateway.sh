@@ -1,5 +1,7 @@
 #!/usr/bin/bash -x
 
+source /etc/environment
+
 # Wait for web ui to be active
 # WEB_ACTIVE=$(fleetctl list-units | grep aqua-web.service | grep active)
 
@@ -9,12 +11,12 @@
 # 	sleep 5;
 # done
 
-IMAGE=$(etcdctl get /images/scalock-gateway)
-DB_PASSWORD=$(etcdctl get /environment/RDSPASSWORD)
-DB_USERNAME=$(etcdctl get /flight-director/config/db-username)
-SCALOCK_DB_NAME=$(etcdctl get /aqua/config/db-name)
-SCALOCK_DB_ENDPOINT=$(etcdctl get /aqua/config/db-path)
-SCALOCK_AUDIT_DB_NAME=$(etcdctl get /aqua/config/db-audit-name)
+IMAGE=$(etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /images/scalock-gateway)
+DB_PASSWORD=$(etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /environment/RDSPASSWORD)
+DB_USERNAME=$(etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /flight-director/config/db-username)
+SCALOCK_DB_NAME=$(etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /aqua/config/db-name)
+SCALOCK_DB_ENDPOINT=$(etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /aqua/config/db-path)
+SCALOCK_AUDIT_DB_NAME=$(etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /aqua/config/db-audit-name)
 
 /usr/bin/sh -c "sudo docker run -d -p 3622:3622 --name aqua-gateway \
   --net=host \
