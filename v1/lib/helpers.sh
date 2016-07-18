@@ -11,14 +11,14 @@ fi
 function etcd-set() {
     if [[ "$#" -gt 1 ]]; then
       /home/core/ethos-systemd/v1/lib/etcdauth.sh set "$@"
-      while [ $? != 0 ]; do sleep 1; /home/core/ethos-systemd/v1/lib/etcdauth.sh set $@; done
+      while [ $? != 0 ]; do sleep 1; /home/core/ethos-systemd/v1/lib/etcdauth.sh set "$@"; done
     fi
 }
 
 function etcd-get() {
     /home/core/ethos-systemd/v1/lib/etcdauth.sh get "$@"
     # "0" and "4" responses were successful, "4" means the key intentionally doesn't exist
-    while [[ $? != 0 && $? != 4 ]]; do sleep 1; /home/core/ethos-systemd/v1/lib/etcdauth.sh get $@; done
+    while [[ $? != 0 && $? != 4 ]]; do sleep 1; /home/core/ethos-systemd/v1/lib/etcdauth.sh get "$@"; done
 }
 
 # Handle retrying of all fleet submits and starts
