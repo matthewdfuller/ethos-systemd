@@ -7,7 +7,7 @@ Requires=docker.service
 
 [Service]
 EnvironmentFile=/etc/environment
-Environment="IMAGE=etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /images/flight-director"
+Environment="IMAGE=/home/core/ethos-systemd/v1/lib/etcdauth.sh get /images/flight-director"
 User=core
 Restart=on-failure
 RestartSec=8

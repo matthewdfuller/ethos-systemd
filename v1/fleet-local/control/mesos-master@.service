@@ -5,10 +5,10 @@ After=docker.service bootstrap.service zk-health.service
 
 [Service]
 EnvironmentFile=/etc/environment
-Environment="IMAGE=etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /images/mesos-master"
-Environment="ZK_USERNAME=etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /zookeeper/config/username"
-Environment="ZK_PASSWORD=etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /zookeeper/config/password"
-Environment="ZK_ENDPOINT=etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /zookeeper/config/endpoint"
+Environment="IMAGE=/home/core/ethos-systemd/v1/lib/etcdauth.sh get /images/mesos-master"
+Environment="ZK_USERNAME=/home/core/ethos-systemd/v1/lib/etcdauth.sh get /zookeeper/config/username"
+Environment="ZK_PASSWORD=/home/core/ethos-systemd/v1/lib/etcdauth.sh get /zookeeper/config/password"
+Environment="ZK_ENDPOINT=/home/core/ethos-systemd/v1/lib/etcdauth.sh get /zookeeper/config/endpoint"
 
 User=core
 Restart=always

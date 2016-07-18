@@ -6,7 +6,7 @@ After=docker.service bootstrap.service
 
 [Service]
 EnvironmentFile=/etc/environment
-Environment="IMAGE=etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /images/dd-agent"
+Environment="IMAGE=/home/core/ethos-systemd/v1/lib/etcdauth.sh get /images/dd-agent"
 User=core
 Restart=always
 TimeoutStartSec=0
@@ -22,7 +22,7 @@ ExecStart=/usr/bin/bash -c \
 -v /var/run/docker.sock:/var/run/docker.sock \
 -v /proc/:/host/proc/:ro \
 -v /sys/fs/cgroup/:/host/sys/fs/cgroup:ro \
--e API_KEY=`etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /datadog/config/api-key` \
+-e API_KEY=`/home/core/ethos-systemd/v1/lib/etcdauth.sh get /datadog/config/api-key` \
 $($IMAGE)"
 ExecStop=/usr/bin/docker stop dd-agent
 

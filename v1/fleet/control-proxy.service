@@ -5,8 +5,8 @@ After=docker.service bootstrap.service zk-health.service
 
 [Service]
 EnvironmentFile=/etc/environment
-Environment="IMAGE=etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /images/control-proxy"
-Environment="INTERNAL_CONTROL_ELB=etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /environment/CONTROL_ELB"
+Environment="IMAGE=/home/core/ethos-systemd/v1/lib/etcdauth.sh get /images/control-proxy"
+Environment="INTERNAL_CONTROL_ELB=/home/core/ethos-systemd/v1/lib/etcdauth.sh get /environment/CONTROL_ELB"
 User=core
 Type=simple
 Restart=always

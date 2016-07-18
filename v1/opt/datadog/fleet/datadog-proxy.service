@@ -6,7 +6,7 @@ After=docker.service bootstrap.service
 
 [Service]
 EnvironmentFile=/etc/environment
-Environment="IMAGE=etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /images/dd-agent-proxy"
+Environment="IMAGE=/home/core/ethos-systemd/v1/lib/etcdauth.sh get /images/dd-agent-proxy"
 User=core
 Restart=always
 RestartSec=10
@@ -19,10 +19,10 @@ ExecStart=/usr/bin/bash -c \
 "if [[ -f /etc/profile.d/etcdctl.sh ]]; then source /etc/profile.d/etcdctl.sh;fi && \
 sudo -E /usr/bin/docker run --name dd-agent-proxy \
 --net='host' \
--e API_KEY=`etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /datadog/config/api-key` \
--e PROXY=`etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /capcom/config/proxy` \
--e CAPCOM_HOST=`etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /capcom/config/host` \
--e CAPCOM_PORT=`etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /capcom/config/port` \
+-e API_KEY=`/home/core/ethos-systemd/v1/lib/etcdauth.sh get /datadog/config/api-key` \
+-e PROXY=`/home/core/ethos-systemd/v1/lib/etcdauth.sh get /capcom/config/proxy` \
+-e CAPCOM_HOST=`/home/core/ethos-systemd/v1/lib/etcdauth.sh get /capcom/config/host` \
+-e CAPCOM_PORT=`/home/core/ethos-systemd/v1/lib/etcdauth.sh get /capcom/config/port` \
 -e STACK_NAME=$STACK_NAME \
 $($IMAGE)"
 ExecStop=/usr/bin/docker stop dd-agent-proxy

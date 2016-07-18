@@ -29,7 +29,7 @@ systemctl start etcd-peers
 
 echo "-------Waiting for etcd2 to start-------"
 
-while [[ $(etcdctl -u $ETCDCTL_ROOT_USER:$ETCDCTL_ROOT_PASSWORD cluster-health|grep unhealthy) || $(etcdctl -u $ETCDCTL_ROOT_USER:$ETCDCTL_ROOT_PASSWORD member list | wc -l) -lt $CONTROL_CLUSTER_SIZE ]]
+while [[ $(/home/core/ethos-systemd/v1/lib/etcdauth.sh cluster-health|grep unhealthy) || $(/home/core/ethos-systemd/v1/lib/etcdauth.sh member list | wc -l) -lt $CONTROL_CLUSTER_SIZE ]]
 do
   sleep 8
 done

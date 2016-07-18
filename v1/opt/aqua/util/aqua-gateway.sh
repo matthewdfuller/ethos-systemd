@@ -11,12 +11,12 @@ source /etc/environment
 # 	sleep 5;
 # done
 
-IMAGE=$(etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /images/scalock-gateway)
-DB_PASSWORD=$(etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /environment/RDSPASSWORD)
-DB_USERNAME=$(etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /flight-director/config/db-username)
-SCALOCK_DB_NAME=$(etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /aqua/config/db-name)
-SCALOCK_DB_ENDPOINT=$(etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /aqua/config/db-path)
-SCALOCK_AUDIT_DB_NAME=$(etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /aqua/config/db-audit-name)
+IMAGE=$(/home/core/ethos-systemd/v1/lib/etcdauth.sh get /images/scalock-gateway)
+DB_PASSWORD=$(/home/core/ethos-systemd/v1/lib/etcdauth.sh get /environment/RDSPASSWORD)
+DB_USERNAME=$(/home/core/ethos-systemd/v1/lib/etcdauth.sh get /flight-director/config/db-username)
+SCALOCK_DB_NAME=$(/home/core/ethos-systemd/v1/lib/etcdauth.sh get /aqua/config/db-name)
+SCALOCK_DB_ENDPOINT=$(/home/core/ethos-systemd/v1/lib/etcdauth.sh get /aqua/config/db-path)
+SCALOCK_AUDIT_DB_NAME=$(/home/core/ethos-systemd/v1/lib/etcdauth.sh get /aqua/config/db-audit-name)
 
 /usr/bin/sh -c "sudo docker run -d -p 3622:3622 --name aqua-gateway \
   --net=host \

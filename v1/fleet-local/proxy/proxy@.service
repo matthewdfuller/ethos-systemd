@@ -10,9 +10,9 @@ Restart=always
 RestartSec=5
 TimeoutStartSec=0
 EnvironmentFile=/etc/environment
-Environment="IMAGE=etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /images/proxy"  
-Environment="PROXY=etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /capcom/config/proxy"  
-Environment="CMD=etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /capcom/config/proxy-docker-command"
+Environment="IMAGE=/home/core/ethos-systemd/v1/lib/etcdauth.sh get /images/proxy"  
+Environment="PROXY=/home/core/ethos-systemd/v1/lib/etcdauth.sh get /capcom/config/proxy"  
+Environment="CMD=/home/core/ethos-systemd/v1/lib/etcdauth.sh get /capcom/config/proxy-docker-command"
 
 ExecStartPre=/usr/bin/sh -c "source /etc/profile.d/etcdctl.sh && docker pull $($IMAGE)"
 ExecStartPre=-/usr/bin/docker kill proxy

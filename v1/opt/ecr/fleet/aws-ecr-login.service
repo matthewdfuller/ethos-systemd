@@ -8,7 +8,7 @@ After=network-online.target
 [Service]
 Type=oneshot
 EnvironmentFile=/etc/environment
-Environment="IMAGE=etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /images/ecr-login"
+Environment="IMAGE=/home/core/ethos-systemd/v1/lib/etcdauth.sh get /images/ecr-login"
 User=core
 ExecStartPre=/usr/bin/sh -c "source /etc/profile.d/etcdctl.sh && docker pull $($IMAGE)"
 ExecStartPre=-/usr/bin/docker kill ecr-login

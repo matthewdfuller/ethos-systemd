@@ -6,8 +6,8 @@ After=docker.service fleet.service bootstrap.service
 [Service]
 EnvironmentFile=/etc/environment
 Environment="GITDIR=/home/core/ethos-systemd"
-Environment="FORK=etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /environment/SCRIPTS-FORK"
-Environment="SHA=etcdctl -u $ETCDCTL_READ_USER:$ETCDCTL_READ_PASSWORD get /environment/SCRIPTS-SHA"
+Environment="FORK=/home/core/ethos-systemd/v1/lib/etcdauth.sh get /environment/SCRIPTS-FORK"
+Environment="SHA=/home/core/ethos-systemd/v1/lib/etcdauth.sh get /environment/SCRIPTS-SHA"
 User=core
 Type=oneshot
 RemainAfterExit=false
