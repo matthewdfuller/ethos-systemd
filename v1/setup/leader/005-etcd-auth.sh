@@ -50,12 +50,12 @@ etcdctl role add read-write
 etcdctl role grant read-write -path '/*' -readwrite
 
 # Give read-user read access
-sudo echo '{"user": "'${READ_USERNAME}'", "grant": ["read-only"]}' > $CRED_DIR/read-only.json
-curl -L http://127.0.0.1:2379/v2/auth/users/${READ_USERNAME} -XPUT -d "@$CRED_DIR/read-only.json"
+sudo echo '{"user": "'${ETCDCTL_READ_USER}'", "grant": ["read-only"]}' > $CRED_DIR/read-only.json
+curl -L http://127.0.0.1:2379/v2/auth/users/${ETCDCTL_READ_USER} -XPUT -d "@$CRED_DIR/read-only.json"
 
 # Give read-write write access
-sudo echo '{"user": "'${WRITE_USERNAME}'", "grant": ["read-write"]}' > $CRED_DIR/read-write.json
-curl -L http://127.0.0.1:2379/v2/auth/users/${WRITE_USERNAME} -XPUT -d "@$CRED_DIR/read-write.json"
+sudo echo '{"user": "'${ETCDCTL_WRITE_USER}'", "grant": ["read-write"]}' > $CRED_DIR/read-write.json
+curl -L http://127.0.0.1:2379/v2/auth/users/${ETCDCTL_WRITE_USER} -XPUT -d "@$CRED_DIR/read-write.json"
 
 # Enable authentication
 etcdctl auth enable
