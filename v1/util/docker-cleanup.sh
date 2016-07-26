@@ -1,22 +1,21 @@
-#!/bin/bash -x
+#!/usr/bin/bash -x
 
 # NOTE: this script will need to be sudo'ed for access to /var/lib/docker
 
 echo "Removing dead containers & volumes"
-docker rm -v $(docker ps -a|grep Exited|cut -d" " -f1)  2> /dev/null
+docker rm $(docker ps -a -q) 2> /dev/null | xargs -n 1 -IXX echo "docker: Removing dead container XX"  
+ 
+echo "Removing images"
+docker rmi -f $(docker images -q -a -f dangling=true) 2> /dev/null | xargs -n 1 -IXX echo "docker: Removing dead image XX"  
 
-# top-level orphaned images have <none> in name.  rmi these
-# rmi them one at a time so it's clear what is being done in the logs
-docker images | grep none | awk '{print $3}' | xargs -n 1 -IXX docker rmi XX
-
-# play on https://github.com/docker/docker/issues/6354#issuecomment-114688663
 FSDRIVER=$(docker info|grep Storage|cut -d: -f2|tr -d [:space:])
 echo "Driver $FSDRIVER"
 echo "---- Complete ----"
 
 sudo free -h
 if [ "$FSDRIVER" = "devicemapper" ]; then
-    sudo lvdisplay
+    sudo lvdisplay | grep Allocated | xargs -n 1 -IXX echo "docker lvm XX"
+    docker info | grep Data | xargs -n 1 -IXX echo "docker XX"
 else
     sudo df -Th
 fi
