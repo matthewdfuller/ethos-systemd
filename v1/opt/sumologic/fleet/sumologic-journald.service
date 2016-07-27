@@ -11,6 +11,7 @@ Environment="IP=curl -sS http://169.254.169.254/latest/meta-data/local-ipv4"
 Environment="REGION=curl -s http://169.254.169.254/latest/dynamic/instance-identity/document|jq .region"
 User=core
 Restart=always
+RestartSec=5s
 TimeoutStartSec=0
 ExecStartPre=/usr/bin/systemctl is-active bootstrap
 ExecStartPre=/usr/bin/bash -c \
