@@ -17,7 +17,7 @@ function copyAndExit() {
 }
 
 if [[ -n "$REGISTRY_ACCOUNT" ]]; then
-    for $REG_NUM in $REGISTRY_ACCOUNT
+    for REG_NUM in $REGISTRY_ACCOUNT
     do
         docker rm ecr-login
 
