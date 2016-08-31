@@ -1,5 +1,10 @@
 #!/usr/bin/bash
 
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+source /etc/environment
+source $DIR/../lib/helpers.sh
+
 IMAGE=$(etcdctl get /images/flight-director)
 
 #only set SCALER_ENDPOINT id booster is enabled
