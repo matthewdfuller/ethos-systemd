@@ -28,6 +28,7 @@ ExecStartPre=-/usr/bin/docker rm booster
 ExecStart=/usr/bin/sh -c "/usr/bin/docker run \
   --name booster \
   --net=host \
+  --userns=HOST \
   -e BOOSTER_ENABLED=$(etcdctl get /booster/config/enabled) \
   -e BOOSTER_NO_PERSISTENCE=$(etcdctl get /booster/config/nopersistence) \
   -e BOOSTER_DB_HOST=$(etcdctl get /flight-director/config/db-path | cut -d: -f1) \

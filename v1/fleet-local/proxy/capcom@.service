@@ -22,6 +22,7 @@ ExecStart=/usr/bin/sh -c "source /etc/profile.d/etcdctl.sh && \
   docker run \
     --name capcom \
     --net='host' \
+    --userns=HOST \
     --privileged \
     -v /etc/$($PROXY):/etc/$($PROXY) \
     -v /var/run/docker.sock:/var/run/docker.sock \
