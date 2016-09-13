@@ -28,7 +28,7 @@ ExecStart=/usr/bin/bash -c "source /etc/profile.d/etcdctl.sh && \
   sudo -E docker run \
     --name=mesos-slave \
     --net=host \
-    --userns=HOST \
+    --userns host \
     --pid=host \
     --privileged \
     -p 5051:5051 \

@@ -22,7 +22,7 @@ ExecStartPre=-/usr/bin/docker rm booster
 ExecStart=/usr/bin/sh -c ". /etc/profile.d/etcdctl.sh && /usr/bin/docker run \
   --name booster \
   --net=host \
-  --userns=HOST \
+  --userns host \
   -e BOOSTER_NO_PERSISTENCE=true \
   -e BOOSTER_ENABLED=$(etcdctl get /booster/config/enabled) \
   -e BOOSTER_NODES=$(etcdctl ls /booster/nodes | cut -d'/' --complement -s -f-3 | tr '\n' ',') \
