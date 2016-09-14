@@ -16,14 +16,15 @@ echo "-------Leader node, beginning writing all default values to etcd-------"
 etcd-set /images/secrets-downloader     "index.docker.io/behance/docker-aws-secrets-downloader:v1.1.0"
 etcd-set /images/klam-ssh               "index.docker.io/behance/klam-ssh:v1"
 
-etcd-set /images/chronos                "index.docker.io/mesosphere/chronos:chronos-2.4.0-0.1.20150828104228.ubuntu1404-mesos-0.27.0-0.2.190.ubuntu1404"
-etcd-set /images/flight-director        "index.docker.io/behance/flight-director:4db22fcd475f200c195a3f5e116f06604e894426"
+etcd-set /images/chronos                "index.docker.io/mesosphere/chronos:chronos-2.5.0-0.1.20160824153434.ubuntu1404-mesos-1.0.0"
+etcd-set /images/flight-director        "index.docker.io/behance/flight-director:c5e22bb3e7f2d2149b9744b9e0169ae756d5852a"
 etcd-set /images/marathon               "index.docker.io/mesosphere/marathon:v1.1.2"
 etcd-set /images/mesos-master           "index.docker.io/mesosphere/mesos-master:0.28.20.28.2-2.0.27.ubuntu1404"
 etcd-set /images/zk-exhibitor           "index.docker.io/behance/docker-zk-exhibitor:v1.0.0"
 etcd-set /images/cfn-signal             "index.docker.io/behance/docker-cfn-bootstrap:v1.0.0"
 etcd-set /images/jenkins                "index.docker.io/jenkins:1.651.1"
-etcd-set /images/booster                "index.docker.io/behance/booster:0.2"
+etcd-set /images/booster                "index.docker.io/behance/booster:0.4"
+etcd-set /images/booster-sidekick       "index.docker.io/behance/booster-sidekick:0.1"
 
 etcd-set /images/capcom                 "index.docker.io/behance/capcom:3ddcfe360a95adcf97d4e9f3a98f9e59057e55c6"
 etcd-set /images/proxy                  "index.docker.io/nginx:1.9.5"
@@ -82,7 +83,9 @@ etcd-set /flight-director/config/mesos-master-protocol http
 etcd-set /flight-director/config/authorizer-type airlock
 etcd-set /flight-director/config/iam-role-label com.swipely.iam-docker.iam-profile
 etcd-set /flight-director/config/scaler-protocol http
-etcd-set /flight-director/config/scaler-endpoint localhost
+etcd-set /flight-director/config/scaler-endpoint localhost:2042
+#This needs to be false for Docker < 1.11. Change to true for newer clusters
+etcd-set /flight-director/config/allow-log-tagging false
 
 ######################
 #     ZOOKEEPER
@@ -108,7 +111,7 @@ etcd-set /mesos/config/username ethos
 #       BOOSTER
 ######################
 
-etcd-set /booster/config/enabled 0
+etcd-set /booster/config/nopersistence 1
 
 ######################
 #      SERVICES
