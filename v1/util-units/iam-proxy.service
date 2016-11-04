@@ -20,6 +20,7 @@ ExecStart=/usr/bin/sh -c "/usr/bin/docker run \
   --volume /var/run/docker.sock:/var/run/docker.sock \
   --restart=always \
   --net=host \
+  --userns host \
   behance/iam-docker:latest"
 
 ExecStop=-/usr/bin/docker stop iam-proxy

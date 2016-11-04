@@ -28,6 +28,7 @@ ExecStart=/usr/bin/bash -c "source /etc/profile.d/etcdctl.sh && \
   sudo -E docker run \
     --name=agent-mesos \
     --net=host \
+    --userns host \
     --pid=host \
     --privileged \
     -p 5051:5051 \
