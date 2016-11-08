@@ -25,6 +25,7 @@ fi
 /usr/bin/docker run \
   --name flight-director \
   --net='host' \
+  --privileged \
   --userns host \
   -e LOG_APP_NAME=flight-director \
   -e FD_API_SERVER_PORT=`etcdctl get /flight-director/config/api-server-port` \
