@@ -31,9 +31,12 @@ ExecStart=/usr/bin/bash -c "sudo docker run \
   -v /var/lib/mesos/master:/var/lib/mesos/master \
   -v /opt/mesos/credentials:/opt/mesos/credentials:ro \
   $($IMAGE) \
-  --authenticate_slaves \
-  --authenticate \
-  --authenticate_http \
+  --authenticate_agents \
+  --authenticate_frameworks \
+  --authenticate_http_frameworks \
+  --authenticate_http_readonly \
+  --authenticate_http_readwrite \
+  --http_framework_authenticators=basic
   --credentials=/opt/mesos/credentials \
   --cluster=$NODE_PRODUCT-$NODE_TIER \
   --hostname=$(curl -s http://169.254.169.254/latest/meta-data/local-hostname) \
