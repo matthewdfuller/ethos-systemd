@@ -47,6 +47,9 @@ ExecStart=/usr/bin/bash -c "source /etc/profile.d/etcdctl.sh && \
     --executor_registration_timeout=10mins \
     --hostname=$(curl -s http://169.254.169.254/latest/meta-data/local-hostname) \
     --log_dir=/var/log/mesos \
+    --authenticate_http_readonly \
+    --authenticate_http_readwrite \
+    --http_authenticators=basic \
     --credential=/opt/mesos/credentials \
     --master=zk://$($ZK_USERNAME):$($ZK_PASSWORD)@$($ZK_ENDPOINT)/mesos \
     --work_dir=/var/lib/mesos/slave \

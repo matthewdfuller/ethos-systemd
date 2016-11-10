@@ -15,21 +15,34 @@ source $DIR/../../lib/helpers.sh
 
 CREDS="$(etcd-get /mesos/config/username) $(etcd-get /mesos/config/password)"
 
+MESOS_USER="$(etcd-get /mesos/config/username)"
+MESOS_PASS="$(etcd-get /mesos/config/password)"
+
 CRED_DIR="/opt/mesos"
 if [[ ! -d $CRED_DIR ]]; then
     sudo mkdir $CRED_DIR -p
 fi
 
 # primary credentials used by workers & masters
-sudo echo "$CREDS" > $CRED_DIR/credentials
+cat << EOT >> $CRED_DIR/credentials
+{
+    "credentials": [
+        {
+	        "principal": "$MESOS_USER",
+	        "secret": "$MESOS_PASS"
+        }
+    ]
+}
+EOT
 
 if [[ "${NODE_ROLE}" = "control" ]]; then
     # on a control node - set up credentials for registering frameworks
     # (i.e.: marathon & chronos)
     # TODO: have separate credentials for framework vs worker/master
-    sudo echo -n "$CREDS" >> $CRED_DIR/credentials
-    sudo echo -n "$(etcd-get /mesos/config/password)" > $CRED_DIR/framework-secret
-    sudo chmod 0600 $CRED_DIR/framework-secret
+    sudo echo -n "$CREDS" >> $CRED_DIR/credentials_old
+    sudo chmod 0600 $CRED_DIR/credentials_old
+    #sudo echo -n "$(etcd-get /mesos/config/password)" > $CRED_DIR/framework-secret
+    #sudo chmod 0600 $CRED_DIR/framework-secret
 fi
 
 sudo chmod 0600 $CRED_DIR/credentials
