@@ -33,9 +33,6 @@ ExecStart=/usr/bin/sh -c "/usr/bin/docker run \
   --userns host \
   -v /opt/mesos/credentials:/opt/mesos/credentials:ro \
   $($IMAGE) \
-  --mesos_authentication \
-  --mesos_authentication_principal $($MESOS_USERNAME) \
-  --mesos_authentication_secret_file /opt/mesos/credentials \
   --master zk://$($ZK_USERNAME):$($ZK_PASSWORD)@$ZOOKEEPER_HOST/mesos \
   --zk zk://$($ZK_USERNAME):$($ZK_PASSWORD)@$ZOOKEEPER_HOST/marathon \
   --http_credentials $($USER):$($PASSWORD) \
