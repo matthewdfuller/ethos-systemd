@@ -17,8 +17,6 @@ ExecStartPre=/usr/bin/systemctl is-active mesos-master@*
 ExecStartPre=/usr/bin/systemctl is-active marathon@*
 ExecStartPre=/usr/bin/sh -c "docker pull $($IMAGE)"
 ExecStartPre=/usr/bin/sh -c "/usr/bin/docker run --rm\
- --privileged \
- --userns host \
  $($IMAGE) cfn-signal\
  --stack $STACK_NAME\
  --region $($AZ|head -c-1)\

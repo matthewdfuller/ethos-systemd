@@ -29,8 +29,6 @@ ExecStart=/usr/bin/sh -c "/usr/bin/docker run \
   --name marathon \
   -e LIBPROCESS_PORT=9090 \
   --net=host \
-  --privileged \
-  --userns host \
   -v /opt/mesos/credentials:/opt/mesos/credentials:ro \
   $($IMAGE) \
   --master zk://$($ZK_USERNAME):$($ZK_PASSWORD)@$ZOOKEEPER_HOST/mesos \
