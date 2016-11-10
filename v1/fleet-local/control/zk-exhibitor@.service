@@ -22,7 +22,6 @@ ExecStart=/usr/bin/bash -c "sudo docker run \
   --name=zk-exhibitor \
   --privileged \
   --userns=host \
-  --net=host \
   -p 8181:8181 \
   -p 2181:2181 \
   -p 2888:2888 \
