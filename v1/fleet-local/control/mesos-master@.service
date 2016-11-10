@@ -4,6 +4,7 @@ Requires=docker.service
 After=docker.service bootstrap.service zk-health.service
 
 [Service]
+Environment=ZOOKEEPER_HOST=localhost:2181
 Environment="IMAGE=etcdctl get /images/mesos-master"
 Environment="ZK_USERNAME=etcdctl get /zookeeper/config/username"
 Environment="ZK_PASSWORD=etcdctl get /zookeeper/config/password"
@@ -43,7 +44,7 @@ ExecStart=/usr/bin/bash -c "sudo docker run \
   --log_dir=/var/log/mesos \
   --quorum=$((($CONTROL_CLUSTER_SIZE+1)/2)) \
   --work_dir=/var/lib/mesos/master \
-  --zk=zk://$($ZK_USERNAME):$($ZK_PASSWORD)@$($ZK_ENDPOINT)/mesos"
+  --zk=zk://$($ZK_USERNAME):$($ZK_PASSWORD)@$ZOOKEEPER_HOST/mesos"
 
 ExecStop=-/usr/bin/docker stop mesos-master
 
