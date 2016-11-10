@@ -29,6 +29,8 @@ ExecStart=/usr/bin/sh -c "/usr/bin/docker run \
   --name marathon \
   -e LIBPROCESS_PORT=9090 \
   --net=host \
+  --privileged \
+  --userns=host \
   -v /opt/mesos/credentials_framework:/opt/mesos/credentials_framework:ro \
   $($IMAGE) \
   --mesos_authentication \
