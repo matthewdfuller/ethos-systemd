@@ -34,7 +34,7 @@ ExecStart=/usr/bin/bash -c "sudo docker run \
   -e ZK_PASSWORD=$(etcdctl get /zookeeper/config/password) \
   -e AWS_REGION=$(curl -s http://169.254.169.254/latest/dynamic/instance-identity/document|jq .region) \
   -e HOSTNAME=$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4) \
-  $($IMAGE) bash -ex chmod 777 /opt/zookeeper/conf/zoo.cfg && /opt/exhibitor/wrapper.sh"
+  $($IMAGE) bash -ex /opt/exhibitor/wrapper.sh"
 
 ExecStop=-/usr/bin/docker stop zk-exhibitor
 
