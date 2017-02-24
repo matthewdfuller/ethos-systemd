@@ -10,7 +10,7 @@ IMAGE=$(/home/core/ethos-systemd/v1/lib/etcdauth.sh get /images/flight-director)
 #only set Aqua endpoints for FD if Aqua is enabled
 if [[ "$(/home/core/ethos-systemd/v1/lib/etcdauth.sh get /environment/services)" == *"aqua"* ]]
 then
-  AQUA_URL=`/home/core/ethos-systemd/v1/lib/etcdauth.sh get /aqua/config/gateway-external`
+  AQUA_URL=`/home/core/ethos-systemd/v1/lib/etcdauth.sh get /aqua/config/gateway-host`
   uri_parser $AQUA_URL
 
   AQUA_PROTOCOL=$uri_schema
